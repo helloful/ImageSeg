@@ -6,8 +6,7 @@ from torch.utils.data import Dataset,DataLoader
 import torchvision.transforms as transforms
 from torchvision.transforms import functional as TF
 from semi_dataset import train_dataset,test_dataset
-from code.summit.model2 import Inf_Net
-from code.summit.model1 import Model
+from model2 import Model
 from dataset import MyDataset
 import torch.nn.functional as F
 import numpy as np
@@ -52,7 +51,7 @@ def joint_loss(pred, mask):
 def train_stage1():
     # 初始化模型
     init()
-    model=Inf_Net().cuda()
+    model=Model().cuda()
     # model=Model().cuda()
     # model.load_state_dict(torch.load("./exp/model_epoch_155.pth")['state_dict'])
 
@@ -112,7 +111,7 @@ def train_stage1():
 
 def valid_stage1(pth='./exp_semi/stage1/model_epoch_90.pth'):
     # 把通过第一阶段的训练的模型加载生成伪标签
-    model=Inf_Net().cuda()
+    model=Model().cuda()
     model.load_state_dict(torch.load(pth)['state_dict'])
     model.eval()
     valid_path='/home/user1/homework/yxyxfx/COVID-19_Radiography_Dataset/COVID/images/'
@@ -142,7 +141,7 @@ def valid_stage1(pth='./exp_semi/stage1/model_epoch_90.pth'):
 def train_model(pth_path,img_path,gt_path):
     # 初始化模型
     # init()
-    model=Inf_Net().cuda()
+    model=Model().cuda()
     # model=Model().cuda()
     model.load_state_dict(torch.load(pth_path)['state_dict'])
 
@@ -222,7 +221,7 @@ def train():
 def valid(model=None,test_dataloader=None,dataset='COVID',train=False):
   
     if model is None:
-        model=Inf_Net().cuda()
+        model=Model().cuda()
         checkpoint=torch.load("/home/user1/homework/yxyxfx/code/exp_semi/stage1/50_model_epoch_90.pth")
         model.load_state_dict(checkpoint['state_dict'])
         # 初始化数据集
